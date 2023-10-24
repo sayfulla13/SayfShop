@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!doctype html>
+<html lang="en">
+<head>
+
+
+    <style>
+
+/* Кнопка, используемая для открытия контактной формы-фиксируется в нижней части страницы */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+
+}
+
+/* Всплывающая форма-скрыта по умолчанию */
+.form-popup {
+  display: none;
+  border: 3px solid #f1f1f1;
+}
+
+.btn1 {
+    position: relative;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Главная</title>
+</head>
+<body>
+
+
+<button class="btn btn-success" onclick="openForm()" id="shower">Поиск по фильтрам</button>
+<br><div class="form-popup row g-3" id="myForm" style="width: 100%; ">
+    <form action="{% url 'home' %}" method="post">{% csrf_token %}
+    <div class="row">
+        <div class="col-sm">
+                        <label class="form-label" for="id_category">Название:</label> <input type="text" name="name" value="{{ name }}" class="form-control">
+        </div>
+        <div class="col-sm">
+                        <label class="form-label" for="id_category">Производитель:</label>  <input type="text" name="manufacturer" value="{{ manufacturer }}" class="form-control">
+        </div>
+    </div>
+            <label for="id_category">Категория:</label>
+            <select name="category" id="id_category"class="form-control">
+                <option value="all" selected class="form-control">Все</option>
+                {% for cat in categorys %}
+                    <option class="form-control" value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+
+
+        <div class="row">
+            <div class="col-sm"><label for="id_category">Цена: </label>
+                   от <input type="number" name="min"value="{{ min }}" class="form-control">
+            </div>
+            <div class="col-sm">
+                   до <input type="number" name="max"value="{{ max }}"class="form-control">
+            </div>
+            <div class="col-sm">
+                <label for="id_category">Категория:</label>
+                <select name="category" id="id_category"class="form-control">
+                    <option value="all" selected class="form-control">Все</option>
+                    {% for cat in categorys %}
+                        <option class="form-control" value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary btn1" >Применить фильтры</button>
+        <br><br>
+        <button type="button" class="btn cancel btn btn-danger btn1" onclick="closeForm()">Закрыть</button>
+        </form>
+</div>
+
+
+<h1>Товары :</h1>
+<h2>{{ error }}</h2>
+<div class="row">
+    {% for product in products %}
+        {% if product.count > 0 %}
+            <div class="col-3" style="margin-bottom:2rem;  ">
+                <div class="card" style="width: 18rem;height:25rem; ">
+                    <img src="{{ product.img.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <a href="{% url 'viewproduct' product.pk %}" class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ product.name|truncatechars:20 }}</a><br>
+                        {{ product.discription|truncatechars:40 }}<br>
+                        <b>{{ product.price }} тенге</b> <br>
+                    </div>
+                </div>
+             </div>
+    {% endif %}
+{% endfor %}
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+  document.getElementById("shower").style.display = "none";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+  document.getElementById("shower").style.display = "block";
+}
+</script>
+
+
+</body>
+</html>
+{% endblock %}
+

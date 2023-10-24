@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Мои товары</title>
+</head>
+<body>
+<h1>Мои товары :</h1>
+<div class="row">
+{% for product in products %}
+        <div class="col-3" style="margin-bottom:2rem;  ">
+        <div class="card" style="width: 18rem;height:25rem; ">
+          <img src="{{ product.img.url }}" class="card-img-top" alt="...">
+          <div class="card-body">
+        <a href="{% url 'ChangeProduct' product.pk %}" class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Изменить {{ product.name|truncatechars:18 }}</a><br>
+        {{ product.discription|truncatechars:40 }}<br>
+        <b>{{ product.price }} тенге</b>
+          </div>
+        </div>
+             </div>
+{% endfor %}
+</div>
+
+
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ error }}</h2>
+    <h1>Корзина</h1>
+{% if sum > 0 %}
+             <form action="{% url 'buyBasket' %}" method="post" >{% csrf_token %}
+                <button class="btn btn-success">Купить на сумму {{ sum }}</button>
+             </form>
+{% endif %}
+
+
+    <div class="row">
+    {% for basket in baskets %}
+            <div class="col-3" style="margin-bottom:2rem;  ">
+                <div class="card" style="width: 18rem;height:28rem; ">
+                    <img src="{{ basket.product.img.url }}" class="card-img-top" alt="...">
+                    <div class="card-body" style="position:relative">
+                        <a href="{% url 'viewproduct' basket.product.pk %}" class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">{{ basket.product.name|truncatechars:20 }}</a><br>
+                        {{ basket.product.discription|truncatechars:40 }}<br>
+                        <b>{{ basket.product.price }} тенге</b> <br>
+                        <button form="deleteform{{ basket.pk }}" class="btn btn-danger" style="position: absolute;bottom:0.5em">Удалить из корзины</button>
+                    </div>
+                </div>
+                        <form action="{% url 'deleteBasket' basket.pk %}" id="deleteform{{ basket.pk }}">
+
+                        </form>
+            </div>
+    {% endfor %}
+</div>
+
+
+
+
+
+
+
+{% endblock %}

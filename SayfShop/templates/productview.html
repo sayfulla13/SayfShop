@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+
+    .card{
+position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -20%);
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+    }
+
+    </style>
+{% load static %}
+
+        <div class="card" style="width: 60rem;">
+            <img src="{{ product.img.url }}" class="card-img-top" alt="...">
+                <div class="card-body" style="text-align: center">
+                        <div style="width: 100%;" class="btn btn-warning">
+                            <button class="btn btn-warning" form="add">Добавить в корзину</button>
+                        </div>
+                    <h1>{{ product.name }}</h1>
+                    <p>{{ product.discription }}</p>
+                    <h3><p><b>{{ product.price }} тенге</b></p></h3>
+                    <p><b>производитель : </b>{{ product.manufacturer }}</p>
+                </div>
+        </div>
+
+
+        <form action="{% url 'viewproduct' product.pk %}" method="post" id="add">{% csrf_token %}</form>
+
+
+
+
+
+{% endblock %}
