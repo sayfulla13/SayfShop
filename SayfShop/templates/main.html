@@ -64,8 +64,8 @@
                 {% endfor %}
             </select>
 
-
-        <div class="row">
+<div style="text-align: center">
+    <div class="row">
             <div class="col-sm"><label for="id_category">Цена: </label>
                    от <input type="number" name="min"value="{{ min }}" class="form-control">
             </div>
@@ -82,6 +82,8 @@
                 </select>
             </div>
         </div>
+</div>
+
         <br>
         <button class="btn btn-primary btn1" >Применить фильтры</button>
         <br><br>
@@ -90,7 +92,7 @@
 </div>
 
 
-<h1>Товары :</h1>
+<h1>|Товары :</h1>
 <h2>{{ error }}</h2>
 <div class="row">
     {% for product in products %}
