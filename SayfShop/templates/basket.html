@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
+    <style>
+        @media only screen and (max-width: 1000px) {
+
+ .products{
+     position: absolute;
+     left:25%;
+     right: 25%;
+     width: 50%;
+
+
+ }
+}
+    </style>
 <h2>{{ error }}</h2>
     <h1>Корзина</h1>
 {% if sum > 0 %}
@@ -9,9 +22,9 @@
 {% endif %}
 
 
-    <div class="row">
+    <div class="row products">
     {% for basket in baskets %}
-            <div class="col-3" style="margin-bottom:2rem;  ">
+            <div class="col-sm" style="margin-bottom:2rem;  ">
                 <div class="card" style="width: 18rem;height:28rem; ">
                     <img src="{{ basket.product.img.url }}" class="card-img-top" alt="...">
                     <div class="card-body" style="position:relative">
