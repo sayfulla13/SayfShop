@@ -2,32 +2,119 @@
 
 {% load static %}
 <style>
+/* Кнопка, используемая для открытия контактной формы-фиксируется в нижней части страницы */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
 
+}
+
+/* Всплывающая форма-скрыта по умолчанию */
+.form-popup {
+  display: none;
+  border: 3px solid #f1f1f1;
+}
+
+.btn1 {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+}
     body{
-        background-image: url("{% static 'paper-background_53876-147734.avif' %}");
+
     }
 </style>
 
 
-<body class="bg-light bg-gradient">
-<nav class="navbar navbar-expand-lg bg-body-tertiary ">
-    <a class="navbar-brand" href="{% url 'home' %}">Главная</a>
-        <a class="navbar-brand" aria-current="page" href="{% url 'createProduct' %}">Добавить товар</a>
-        <a class="navbar-brand" aria-current="page" href="{% url 'basket' %}">Корзина</a>
-        <a class="navbar-brand" aria-current="page" href="{% url 'myProducts' %}">Мои товары</a>
-        <div style="margin-right: 0rem; margin-left: auto" class="btn btn-warning">
-            {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">Выйти с {{ user.username }}</a>
+<body class="bg-light">
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="{% url 'home' %}" class="nav-link px-2 text-white">main</a></li>
+          <li><a href="{% url 'createProduct' %}" class="nav-link px-2 text-white">add product</a></li>
+          <li><a href="{% url 'basket' %}" class="nav-link px-2 text-white">Cart</a></li>
+          <li><a href="{% url 'myProducts' %}" class="nav-link px-2 text-white">My products</a></li>
+        </ul>
+         <button class="btn btn-success bg-dark" onclick="openForm()" id="shower" style="margin-right:1em ">Search</button>
+
+        {% if user.is_authenticated %}
+            <div class="text-end">
+                <a href="{% url 'logout' %}" class="btn btn-outline-light me-2">Logout {{ user.username }}</a>
+            </div>
             {% else %}
-                <a href="{% url 'login' %}">Войти</a>|
-                <a href="{% url 'signup' %}">Зарегистироваться</a>
-            {% endif %}
+            <div class="text-end">
+                <a href="{% url 'login' %}" class="btn btn-outline-light me-2">Login</a>
+                <a href="{% url 'signup' %}" class="btn btn-outline-light me-2">Sign up</a>
+            </div>
+        {% endif %}
 
+      </div>
+    </div>
+  </header>
+<br>
+<div class="form-popup row g-3" id="myForm" style="width: 100%; ">
 
-
+    <form action="{% url 'home' %}" method="post">{% csrf_token %}
+    <div class="row">
+        <div class="col-sm">
+                        <label class="form-label" for="id_category">Название:</label> <input type="text" name="name" value="{{ name }}" class="form-control">
         </div>
-</nav>
+        <div class="col-sm">
+                        <label class="form-label" for="id_category">Производитель:</label>  <input type="text" name="manufacturer" value="{{ manufacturer }}" class="form-control">
+        </div>
+    </div>
+            <label for="id_category">Категория:</label>
+            <select name="category" id="id_category"class="form-control">
+                <option value="all" selected class="form-control">Все</option>
+                {% for cat in categorys %}
+                    <option class="form-control" value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
 
+    <div class="row">
+            <div class="col-sm"><label for="id_category">Цена: </label>
+                   от <input type="number" name="min"value="{{ min }}" class="form-control">
+            </div>
+            <div class="col-sm">
+                   до <input type="number" name="max"value="{{ max }}"class="form-control">
+            </div>
+            <div class="col-sm">
+                <label for="id_category">Категория:</label>
+                <select name="category" id="id_category"class="form-control">
+                    <option value="all" selected class="form-control">Все</option>
+                    {% for cat in categorys %}
+                        <option class="form-control" value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+        <br>
+        <button class="btn btn-primary btn1" >Применить фильтры</button>
+        <br><br>
+        <button type="button" class="btn cancel btn btn-danger btn1" onclick="closeForm()">Закрыть</button>
+        </form>
+</div>
+</div>
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+  document.getElementById("shower").style.display = "none";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+  document.getElementById("shower").style.display = "block";
+}
+</script>
 {% block content %}
 {% endblock %}
 
